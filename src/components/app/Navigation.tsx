@@ -42,7 +42,6 @@ const Navigation = () => {
                 <SubMenu key="sub1" icon={<CustomIcon iconName="TeamOutlined" allIcons={allIcons} />} title="Teams">
                     {
                         departments.map((depart: Department, i: number) => {
-                            console.log(depart)
                             return <Menu.Item key={i}
                                 icon={<CustomIcon iconName={depart.DepartmentIcon ?? 'QuestionOutlined'} allIcons={allIcons} />}
                             ><Link title={depart.DepartmentName} to={{
@@ -68,7 +67,7 @@ const Navigation = () => {
                     }} >Admin</Link>
                 </Menu.Item>
                 <Menu.Item key="git" icon={<CustomIcon iconName="GithubOutlined" allIcons={allIcons} />} >
-                    <a href="https://github.com/afick/hr-demo" target="_blank" rel="noreferrer" >Git</a>
+                    <a data-collapsed={collapsedMenu} href="https://github.com/afick/hr-demo" target="_blank" rel="noreferrer" >Git</a>
                 </Menu.Item>
             </Menu>
 

@@ -6,7 +6,7 @@ const Dashboard = (_props: any) => {
 
     return (
         <div style={{
-            width: '100%', 'textAlign': 'center', marginTop: 'calc(150px)'
+            width: '100%', 'textAlign': 'center', marginTop: '10px'
         }}>
             <h1>Welcome to the Fickersons</h1>
             <p>This site was build with React.JS <em>(yarn create react-app my-app)</em>with a Amplify backend. <em>(amplify push)</em></p>

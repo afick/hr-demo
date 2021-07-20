@@ -7,7 +7,7 @@ import { Query } from 'class/Query'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { DEFAULT_DATE_FORMAT } from 'utils/Constants'
-
+import { isMobile } from 'react-device-detect'
 
 
 const Employees = (props: any) => {
@@ -29,11 +29,10 @@ const Employees = (props: any) => {
         }
 
     }, [hash, props.location.state])
-
     return (
         <div style={{ height: '100%', width: '100%', margin: '20px' }}>
             <h1>Department: {hash}</h1>
-            <Row gutter={16}>
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                 {
                     employees?.map((employee: Employee, i: number) => {
                         let actions = []
@@ -42,11 +41,11 @@ const Employees = (props: any) => {
                         }
                         const hireDateDisplay = employee.hireDate !== null && employee.hireDate !== undefined ? `Hired on ${dayjs(employee.hireDate).format(DEFAULT_DATE_FORMAT)}` : ''
                         return (
-                            <Col span={4} key={i}>
+                            <Col span={(4)} key={i}>
                                 <Card key={i}
                                     actions={actions}
                                     hoverable
-                                    style={{ width: 240 }}
+                                    style={{ width: isMobile ? 100 : 240 }}
                                     cover={<img alt={`${employee.firstName} ${employee.lastName}`} src={employee.headshot ?? ''} />}
                                 >
                                     <Meta title={`${employee.firstName} ${employee.lastName}`} description={`${employee.title}`}>
