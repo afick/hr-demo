@@ -16,7 +16,7 @@ export class Query {
     }
 
     getDepartments = async () => {
-        const results = await this.get(queries.listDepartments, { filter: {} })
+        const results = await this.get(queries.listDepartments)
         return results.data.listDepartments.items as Department[]
     }
 

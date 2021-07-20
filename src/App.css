@@ -1,0 +1,26 @@
+html,
+body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* needed for container min-height */
+}
+.ant-layout{
+  height:100%;
+}
+.logo {
+  height: 32px;
+  margin: 5px 16px 16px 0;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+  [data-theme="dark"] .site-layout .site-layout-background  {
+    background: #141414;
+  }
+
+  a[data-collapsed="true"]{
+    line-height: 0;
+    font-size: 0;
+    color: transparent;
+  }

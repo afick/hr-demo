@@ -1,0 +1,19 @@
+type Employee @model
+  @key(name: "byDepartmentId", fields: ["departmentId", "id"]) {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  title: String!
+  linkedInUrl: String
+  headshot: String
+  hireDate: String!
+  departmentId: ID!
+}
+
+
+type Department @model{
+  id: ID!
+  DepartmentName: String!
+  DepartmentIcon: String
+  employees:[Employee] @connection(keyName: "byDepartmentId", fields:["id"])
+}
