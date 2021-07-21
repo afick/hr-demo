@@ -6,12 +6,15 @@
 ## ant design
 `yarn add antd`
 
+_would use sass or less for css if had more time_
+
 ## amplify
 utilizing graphql, appsync, and CI/CD
 
 ## data design
 two tables in dynamodb
 
+_would use postgres or aurora for this if had more time, with custom resolvers_
 #### employee
     id: ID!
     firstName: String!
@@ -31,10 +34,16 @@ two tables in dynamodb
 ## testing
 Jest with @testing-library/react
 
-_Would use cypress for front end E2E testing_
+_Would use cypress for BDD end E2E testing_
 
 
 ### run application
 `yarn`
 
 `yarn start`
+
+#### site
+* create / update / delete employees
+* create departments
+* search employees
+* view employees by department
