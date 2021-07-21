@@ -30,9 +30,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --coverage",
     "eject": "react-scripts eject",
-    "test:coverage": "react-scripts test --coverage --watchAll=false"
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
+    "test:tsc": "tsc -p tsconfig.test.json"
   },
   "eslintConfig": {
     "extends": [
@@ -52,8 +53,18 @@
       "last 1 safari version"
     ]
   },
+  "jest": {
+    "transformIgnorePatterns": [
+      "/node_modules/(?!antd|@ant-design|rc-.+?|@babel/runtime).+(js|jsx)$"
+    ]
+  },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react-test-renderer": "^17.0.1",
+    "react-test-renderer": "^17.0.2",
+    "ts-jest": "^27.0.3"
+  }
 }

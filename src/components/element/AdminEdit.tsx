@@ -5,13 +5,13 @@ import { Department, Employee } from 'API'
 import { Query } from 'class/Query'
 import dayjs from 'dayjs'
 import React, { useState, useEffect } from 'react'
-import { DEFAULT_DATE_FORMAT, hasStringValue } from 'utils/Constants'
+import { hasStringValue } from 'utils/Constants'
+import AdminEmployees from './AdminEmployees'
 import DepartmentEdit from './DepartmentEdit'
 
-
-const AdminEdit = (_props: any) => {
-
-    const [form] = Form.useForm(),
+const AdminEdit = () => {
+    const
+        [form] = Form.useForm(),
         [departments, setDepartments] = useState<Department[]>([]),
         [isModalVisible, setIsModalVisible] = useState(false),
         [employees, setEmployees] = useState<Employee[]>([]),
@@ -22,18 +22,19 @@ const AdminEdit = (_props: any) => {
         [updateData, setUpdateData] = useState(true),
         [selectedValue, setSelectedValue] = useState('0'),
         [deleteMessage, setDeleteMessage] = useState(''),
-        onDelete = (value: any) => {
-            if (value) {
-                setDeleteMessage('')
-            }
-            else {
-                setDeleteMessage('  this user will no longer be active')
-            }
+        query = new Query(),
+        { Option } = Select,
+        /* eslint-disable no-template-curly-in-string */
+        validateMessages = {
+            required: '${label} is required!'
         },
+        /* eslint-disable no-template-curly-in-string */
+        onDelete = (value: any) => (setDeleteMessage(value ? '' : '  this user will no longer be active')),
         onFinish = (values: any) => {
             if (deleteMessage.length > 0) {
-                new Query().deleteEmployee(values.user.id).then(() => {
-                    message.success('Successfully saved')
+                query.deleteEmployee(values.user.id).then(() => {
+                    message.success('Successfully deleted user')
+                    setDeleteMessage('')
                     updateEmployeeForm('0')
                 }
                 ).catch(() => message.error('failed to save')).finally(() =>
@@ -44,9 +45,7 @@ const AdminEdit = (_props: any) => {
             }
         },
         saveUser = (user: any) => {
-            user.hireDate = dayjs(user.hireDate).format(DEFAULT_DATE_FORMAT)
-            user.headshot = randomUserHeadShotUrl
-            new Query().saveEmployee(user).then((data) => {
+            query.saveEmployee(user, randomUserHeadShotUrl).then((data) => {
                 setUpdateData(true)
                 return data
             }).then(() => {
@@ -60,18 +59,6 @@ const AdminEdit = (_props: any) => {
         showModal = () => {
             setIsModalVisible(true)
         },
-        { Option } = Select,
-        /* eslint-disable no-template-curly-in-string */
-        validateMessages = {
-            required: '${label} is required!',
-            types: {
-                email: '${label} is not a valid email!',
-                number: '${label} is not a valid number!',
-            },
-            number: {
-                range: '${label} must be between ${min} and ${max}',
-            },
-        },
         getRandomImage = () => {
             setShowDisabled(true)
             fetch('https://randomuser.me/api/').then((json) => json.json()).then((response) => {
@@ -82,7 +69,6 @@ const AdminEdit = (_props: any) => {
                 setRandomUserHeadshotUrl(response.results[0].picture.large)
             })
         },
-
         updateEmployeeForm = (value: string) => {
             setSelectedValue(value)
             const employee = employees.find((employeeItem: Employee) => employeeItem.id === value) ?? null
@@ -102,9 +88,6 @@ const AdminEdit = (_props: any) => {
                 if (hasStringValue(employee?.headshot)) {
                     setRandomUserHeadshotUrl(employee?.headshot ?? '')
                     setRandomUserHeadshots(<Image src={employee?.headshot ?? ''} />)
-                }
-                else {
-
                 }
             }
             else {
@@ -131,33 +114,21 @@ const AdminEdit = (_props: any) => {
                 setShowDisabled(false)
                 setRandomUserHeadshotUrl(response.results[0].picture.large)
             })
-        }
-        new Query().getEmployees().then((employees) => {
+        },
+            query = new Query()
+        query.getEmployees().then((employees) => {
             setEmployees(employees)
         })
-        new Query().getDepartments().then((departments) => {
+        query.getDepartments().then((departments) => {
             setDepartments(departments)
             randomizedImage()
         })
         setUpdateData(false)
     }, [updateData])
 
-
-    /* eslint-disable no-template-curly-in-string */
     return (
         <>
-            <div style={{ textAlign: 'left' }}>
-                <Select style={{ 'width': '75%' }} value={selectedValue} onChange={updateEmployeeForm}>
-                    <Option key="0" value="0">Add New Employee</Option>
-                    {
-                        employees.map((item: Employee) => {
-                            return (
-                                <Option key={item.id} value={item.id ?? ''}>{`Edit ${item.firstName} ${item.lastName}`}</Option>
-                            )
-                        })
-                    }
-                </Select>
-            </div>
+            <h1>Admin</h1>
             <Form
                 form={form}
                 validateMessages={validateMessages}
@@ -167,10 +138,10 @@ const AdminEdit = (_props: any) => {
                 layout="horizontal"
                 size={'large' as SizeType}
             >
-
-                <Form.Item label="" id="Id" name={['user', 'id']}  >
-                    <Input hidden={true} />
+                <Form.Item label="Select">
+                    <AdminEmployees updateEmployeeForm={updateEmployeeForm} selectedValue={selectedValue} employees={employees} />
                 </Form.Item>
+                <p></p>
                 <Form.Item label="First Name" id="firstName" name={['user', 'firstName']} rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
@@ -217,9 +188,12 @@ const AdminEdit = (_props: any) => {
                     <DatePicker />
                 </Form.Item>
                 <Form.Item label="Still Working Here" name={['status', 'stillHere']} hidden={hideDelete}>
-                    <Switch defaultChecked={true} checked checkedChildren="Yes" unCheckedChildren="No" onClick={onDelete} />
+                    <Switch defaultChecked={true} checkedChildren="Yes" unCheckedChildren="No" onClick={onDelete} />
                 </Form.Item>
-                <Form.Item label="">
+                <Form.Item label="" id="Id" name={['user', 'id']} style={{ height: '0px' }} >
+                    <Input hidden={true} />
+                </Form.Item>
+                <Form.Item label=" " style={{ color: 'transparent' }}>
                     <Button type="primary" htmlType="submit" disabled={showDisabled} >Save</Button>{deleteMessage}
                 </Form.Item>
             </Form>

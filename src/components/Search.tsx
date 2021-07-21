@@ -21,7 +21,9 @@ const Search = () => {
 
     }, [])
     return (
-        <div className="ag-theme-alpine" style={{ height: '100%', width: '100%' }}>
+        <div className="ag-theme-alpine" style={{
+            height: '750px', width: '100%'
+        }}>
             <AgGridReact
 
                 pagination={true}
@@ -45,7 +47,7 @@ const Search = () => {
                 <AgGridColumn field="departmentId" valueGetter={constValueGetter} sortable={true}
                     headerName="Department" filter={true} ></AgGridColumn>
             </AgGridReact>
-        </div>
+        </div >
     )
 }
 

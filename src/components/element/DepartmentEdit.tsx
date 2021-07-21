@@ -8,8 +8,12 @@ import { hasStringValue } from 'utils/Constants'
 import * as AntdIcons from '@ant-design/icons'
 import CustomIcon from './CustomIcon'
 
+interface DepartmentEditInterface {
+    onOk?: () => void | null
+    existingDepartments?: (string | undefined)[] | any
+}
 
-const DepartmentEdit = (props: any) => {
+const DepartmentEdit = (props: DepartmentEditInterface) => {
     const allIcons: {
         [key: string]: any
     } = AntdIcons,
@@ -27,14 +31,18 @@ const DepartmentEdit = (props: any) => {
         }
         new Query().saveDepartment({ DepartmentName: values.dept.departmentName, DepartmentIcon: values.dept.departmentIcon }).then(() => {
             message.success('Successfully saved')
-            props.onOk()
+            if (props.onOk !== null && props.onOk !== undefined) {
+                props.onOk()
+            }
         }).catch(() => message.error('failed to save'))
     },
         [form] = Form.useForm(),
         clearModal = () => {
             form.resetFields()
             setMessageValidation('')
-            props.onOk()
+            if (props.onOk !== null && props.onOk !== undefined) {
+                props.onOk()
+            }
         },
         [messageValidation, setMessageValidation] = useState('')
 

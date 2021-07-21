@@ -1,10 +1,14 @@
-
-
 import { QuestionOutlined } from '@ant-design/icons'
 
-const CustomIcon = (props: any) => {
+interface CustomIconProps {
+    iconName: string | null | undefined | never
+    allIcons: any
+}
+
+const CustomIcon = (props: CustomIconProps) => {
     const iconName = props.iconName ?? 'QuestionCircle'
     const Component = props.allIcons[iconName]
+
     if (Component !== null && Component !== undefined) {
         return (
             <Component />
@@ -13,7 +17,6 @@ const CustomIcon = (props: any) => {
     return (
         <QuestionOutlined />
     )
-
 }
 
 export default CustomIcon

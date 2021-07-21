@@ -3,7 +3,8 @@ import * as queries from 'graphql/queries'
 import * as mutations from 'graphql/mutations'
 
 import { Department, Employee } from 'API'
-import { hasStringValue } from 'utils/Constants'
+import { DEFAULT_DATE_FORMAT, hasStringValue } from 'utils/Constants'
+import dayjs from 'dayjs'
 
 export class Query {
 
@@ -34,7 +35,9 @@ export class Query {
         return results.data.listEmployees.items as Employee[]
     }
 
-    saveEmployee = async (employee: any) => {
+    saveEmployee = async (employee: any, randomUserHeadShotUrl: string) => {
+        employee.hireDate = dayjs(employee.hireDate).format(DEFAULT_DATE_FORMAT)
+        employee.headshot = randomUserHeadShotUrl
         if (hasStringValue(employee.id)) {
             return await this.update(mutations.updateEmployee, employee)
         }

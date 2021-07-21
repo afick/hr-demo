@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dashboard tests renders snapshot as expected 1`] = `
+<div
+  style={
+    Object {
+      "marginTop": "10px",
+      "textAlign": "center",
+      "width": "100%",
+    }
+  }
+>
+  <h1>
+    Welcome to the Fickersons
+  </h1>
+  <p>
+    This site was build with React.JS 
+    <em>
+      (yarn create react-app my-app)
+    </em>
+    with a Amplify backend. 
+    <em>
+      (amplify push)
+    </em>
+  </p>
+  <p>
+    GraphQL with DynamoDB source
+  </p>
+  <p>
+    Ant Design and AG-Grid
+  </p>
+  <p>
+    Pardon the design
+  </p>
+</div>
+`;
