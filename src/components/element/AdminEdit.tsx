@@ -45,11 +45,10 @@ const AdminEdit = () => {
             }
         },
         saveUser = (user: any) => {
-            query.saveEmployee(user, randomUserHeadShotUrl).then((data) => {
+            query.saveEmployee(user, randomUserHeadShotUrl).then(() => {
                 setUpdateData(true)
-                return data
-            }).then(() => {
                 message.success('Successfully saved')
+                updateEmployeeForm('0')
             }).catch((ex) => message.error('failed to save' + ex))
         },
         hideModal = () => {
@@ -71,36 +70,30 @@ const AdminEdit = () => {
         },
         updateEmployeeForm = (value: string) => {
             setSelectedValue(value)
-            const employee = employees.find((employeeItem: Employee) => employeeItem.id === value) ?? null
-            if (employee !== undefined || employee !== null) {
-                setHideDelete(false)
-                form.setFieldsValue({
-                    user: {
-                        firstName: employee?.firstName,
-                        lastName: employee?.lastName,
-                        linkedInUrl: employee?.linkedInUrl,
-                        title: employee?.title,
-                        hireDate: hasStringValue(employee?.hireDate) ? dayjs(employee?.hireDate) : '',
-                        departmentId: employee?.departmentId,
-                        id: employee?.id
-                    }
-                })
-                if (hasStringValue(employee?.headshot)) {
-                    setRandomUserHeadshotUrl(employee?.headshot ?? '')
-                    setRandomUserHeadshots(<Image src={employee?.headshot ?? ''} />)
-                }
+            if (value === '0') {
+                form.resetFields()
+                setHideDelete(true)
             }
             else {
-                setHideDelete(true)
-                form.setFieldsValue({
-                    firstName: '',
-                    lastName: '',
-                    linkedInUrl: '',
-                    title: '',
-                    departmentId: '',
-                    id: '0',
-                })
-
+                const employee = employees.find((employeeItem: Employee) => employeeItem.id === value) ?? null
+                if (employee !== undefined || employee !== null) {
+                    setHideDelete(false)
+                    form.setFieldsValue({
+                        user: {
+                            firstName: employee?.firstName,
+                            lastName: employee?.lastName,
+                            linkedInUrl: employee?.linkedInUrl,
+                            title: employee?.title,
+                            hireDate: hasStringValue(employee?.hireDate) ? dayjs(employee?.hireDate) : '',
+                            departmentId: employee?.departmentId,
+                            id: employee?.id
+                        }
+                    })
+                    if (hasStringValue(employee?.headshot)) {
+                        setRandomUserHeadshotUrl(employee?.headshot ?? '')
+                        setRandomUserHeadshots(<Image src={employee?.headshot ?? ''} />)
+                    }
+                }
             }
         }
 
@@ -187,8 +180,12 @@ const AdminEdit = () => {
                 <Form.Item label="Hire Date" id="hireDate" name={['user', 'hireDate']} rules={[{ required: true }]}>
                     <DatePicker />
                 </Form.Item>
-                <Form.Item label="Still Working Here" name={['status', 'stillHere']} hidden={hideDelete}>
-                    <Switch defaultChecked={true} checkedChildren="Yes" unCheckedChildren="No" onClick={onDelete} />
+                <Form.Item label="Still Working Here" name={['status', 'stillHere']} style={{
+                    display: (hideDelete) ? 'none' : ''
+                }}>
+                    <Switch defaultChecked={true} checkedChildren="Yes" unCheckedChildren="No" onClick={onDelete}
+
+                    />
                 </Form.Item>
                 <Form.Item label="" id="Id" name={['user', 'id']} style={{ height: '0px' }} >
                     <Input hidden={true} />
