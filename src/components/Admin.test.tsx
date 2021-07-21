@@ -1,9 +1,6 @@
 import { render, screen, cleanup } from '@testing-library/react'
-import { Query } from 'class/Query'
-import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import Admin from './Admin'
-import { mocked } from 'ts-jest/utils'
 
 jest.mock('./element/AdminEdit', () => {
     return {
